@@ -364,5 +364,6 @@ FodyWeavers.xsd
 
 # etc.
 .env
-.js
-.js.*
+*.env
+*.js
+*.js.*

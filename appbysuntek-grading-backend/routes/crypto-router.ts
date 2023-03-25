@@ -1,6 +1,6 @@
 import * as express from 'express';
-import encrypter from '../services/crypto/Encrypter'
-import dbConfig from '../repositories/dbConfig'
+import encrypter from '../services/crypto/encrypter'
+import dbConfig from '../repositories/db-config'
 
 const router = express.Router();
 

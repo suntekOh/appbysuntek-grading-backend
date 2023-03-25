@@ -1,5 +1,5 @@
 import * as crypto from 'crypto'
-import cryptoConfig from './cryptoConfig'
+import cryptoConfig from './crypto-config'
 
 interface IEncrypter {
     encrypt(clearText: string): string;

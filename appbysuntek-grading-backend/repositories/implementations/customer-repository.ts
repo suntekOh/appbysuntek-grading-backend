@@ -1,21 +1,17 @@
 import { Guid } from "guid-typescript";
-import dbCommand from "./dbCommand"
-import dbConfig from "./dbConfig";
-import queryHelper from "./queryHelper";
+import { inject, injectable } from "tsyringe";
+import { DbCommand } from "./db-command";
+import dbConfig from "../db-config";
+import { ICustomerRepository } from "../i-customer-repository";
+import { IDbCommand } from "../i-db-command";
+import queryHelper from "../query-helper";
+import { Constants } from "../../models/constants";
 
-
-
-interface ICustomerRepository {
-    getMultiple(page: number): Promise<any>;
-    validateCustomer(userName: string, password: string): Promise<any>;
-    create(customer: any): Promise<any>;
-    update(id: Guid, customer: any): Promise<any>;
-    delete(id: Guid): Promise<any>;
-}
-
-class CustomerRepository implements ICustomerRepository {
+@injectable()
+export class CustomerRepository implements ICustomerRepository {
+    constructor(@inject(Constants.DI.IDbCommand) private dbCommand: IDbCommand) { }
     async validateCustomer(user_name: string, password: string): Promise<any> {
-        const rows = await dbCommand.execute(
+        const rows = await this.dbCommand.execute(
             `SELECT * FROM customer where userName= "${user_name}" AND password = "${password}"`
         );
 
@@ -38,7 +34,7 @@ class CustomerRepository implements ICustomerRepository {
     //}
 
     async create(customer: any): Promise<any> {
-        const result = await dbCommand.execute(
+        const result = await this.dbCommand.execute(
             `INSERT INTO customer(userName, firstName, lastName, email, password) VALUES("${customer.user_name}", "${customer.first_name}", "${customer.last_name}", "${customer.email}", "${customer.password}")`);
 
         let message = "Error in creating programming language";
@@ -63,8 +59,8 @@ class CustomerRepository implements ICustomerRepository {
 
 }
 
-const customerRepository = new CustomerRepository(); // create an instance
-export default customerRepository;
+//const customerRepository = new CustomerRepository(); // create an instance
+//export default customerRepository;
 
 
 //async function getMultiple(page = 1) {

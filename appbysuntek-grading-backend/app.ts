@@ -1,10 +1,16 @@
+import "reflect-metadata";
 import * as express from 'express';
 import { AddressInfo } from "net";
 import * as path from 'path';
 import indexRouter from './routes/index';
-import customerRouter from './routes/customerRouter';
-import cryptoRouter from './routes/cryptoRouter';
-
+//import customerRouter from './routes/customerRouter';
+import cryptoRouter from './routes/crypto-router';
+import { container, Lifecycle } from "tsyringe";
+import { CustomerRepository } from './repositories/implementations/customer-repository';
+import { CustomerRouter } from './routes/customer-router';
+import { DbCommand } from "./repositories/implementations/db-command";
+import { Constants } from "./models/constants";
+import { DbConnection } from "./repositories/implementations/db-connection";
 
 const debug = require('debug')('my express app');
 const app = express();
@@ -15,6 +21,27 @@ const app = express();
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
+
+container.register(
+    Constants.DI.ICustomerRepository,
+    { useClass: CustomerRepository },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.register(
+    Constants.DI.IDbCommand,
+    { useClass: DbCommand },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.register(
+    Constants.DI.IConnectionPool,
+    { useClass: DbConnection },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.registerSingleton(CustomerRouter);
+
 app.use(express.json());
 app.use(
     express.urlencoded({
@@ -22,9 +49,10 @@ app.use(
     })
 );
 
+const customerRouter = container.resolve(CustomerRouter);
 
 app.use('/', indexRouter);
-app.use("/customers", customerRouter);
+app.use("/customers", customerRouter.router);
 app.use("/crypto", cryptoRouter);
 
 // catch 404 and forward to error handler

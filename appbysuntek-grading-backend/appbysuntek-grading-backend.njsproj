@@ -32,6 +32,7 @@
   <ItemGroup>
     <None Include="app.ts" />
     <None Include="routes\index.ts" />
+    <Content Include=".env" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
@@ -41,6 +42,7 @@
     <Content Include="views\error.pug" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="repositories\implementations\" />
     <Folder Include="services\crypto\" />
     <Folder Include="models\" />
     <Folder Include="services\" />
@@ -53,34 +55,46 @@
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="repositories\connectionPool.ts">
+    <TypeScriptCompile Include="models\constants.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\queryHelper.ts">
+    <TypeScriptCompile Include="repositories\i-db-connection.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="routes\cryptoRouter.ts">
+    <TypeScriptCompile Include="repositories\implementations\db-connection.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\cryptoConfig.ts">
+    <TypeScriptCompile Include="repositories\i-customer-repository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\dbConfig.ts">
+    <TypeScriptCompile Include="repositories\i-db-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="models\customerDto.ts">
+    <TypeScriptCompile Include="repositories\query-helper.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="routes\customerRouter.ts">
+    <TypeScriptCompile Include="routes\crypto-router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\customerRepository.ts">
+    <TypeScriptCompile Include="services\crypto\crypto-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\dbCommand.ts">
+    <TypeScriptCompile Include="repositories\db-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\Encrypter.ts">
+    <TypeScriptCompile Include="models\customer-dto.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="routes\customer-router.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="repositories\implementations\customer-repository.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="repositories\implementations\db-command.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="services\crypto\encrypter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

@@ -11,6 +11,10 @@ import { CustomerRouter } from './routes/customer-router';
 import { DbCommand } from "./repositories/implementations/db-command";
 import { Constants } from "./models/constants";
 import { DbConnection } from "./repositories/implementations/db-connection";
+import { QueryHelper } from "./repositories/implementations/query-helper";
+import { Encrypter } from "./services/crypto/implementations/encrypter";
+import { CryptoConfig } from "./services/crypto/implementations/crypto-config";
+import { DbConfig } from "./repositories/implementations/db-config";
 
 const debug = require('debug')('my express app');
 const app = express();
@@ -39,6 +43,31 @@ container.register(
     { useClass: DbConnection },
     { lifecycle: Lifecycle.Singleton }
 );
+
+container.register(
+    Constants.DI.IQueryHelper,
+    { useClass: QueryHelper },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.register(
+    Constants.DI.IEncrypter,
+    { useClass: Encrypter },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.register(
+    Constants.DI.ICryptoConfig,
+    { useClass: CryptoConfig },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.register(
+    Constants.DI.IDbConfig,
+    { useClass: DbConfig },
+    { lifecycle: Lifecycle.Singleton }
+);
+
 
 container.registerSingleton(CustomerRouter);
 

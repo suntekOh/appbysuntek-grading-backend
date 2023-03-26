@@ -52,13 +52,20 @@
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
     <Folder Include="repositories\" />
+    <Folder Include="services\crypto\implementations\" />
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="models\constants.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="repositories\i-db-config.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="repositories\i-db-connection.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="repositories\i-query-helper.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="repositories\implementations\db-connection.ts">
@@ -70,16 +77,19 @@
     <TypeScriptCompile Include="repositories\i-db-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\query-helper.ts">
+    <TypeScriptCompile Include="repositories\implementations\query-helper.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="routes\crypto-router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\crypto-config.ts">
+    <TypeScriptCompile Include="services\crypto\i-crypto-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\db-config.ts">
+    <TypeScriptCompile Include="services\crypto\implementations\crypto-config.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="repositories\implementations\db-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="models\customer-dto.ts">
@@ -94,7 +104,10 @@
     <TypeScriptCompile Include="repositories\implementations\db-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\encrypter.ts">
+    <TypeScriptCompile Include="services\crypto\i-encrypter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="services\crypto\implementations\encrypter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

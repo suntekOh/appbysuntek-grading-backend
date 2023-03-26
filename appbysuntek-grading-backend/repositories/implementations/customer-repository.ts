@@ -4,18 +4,22 @@ import { DbCommand } from "./db-command";
 import dbConfig from "../db-config";
 import { ICustomerRepository } from "../i-customer-repository";
 import { IDbCommand } from "../i-db-command";
-import queryHelper from "../query-helper";
 import { Constants } from "../../models/constants";
+import { IQueryHelper } from "../i-query-helper";
 
 @injectable()
 export class CustomerRepository implements ICustomerRepository {
-    constructor(@inject(Constants.DI.IDbCommand) private dbCommand: IDbCommand) { }
+    constructor(
+        @inject(Constants.DI.IDbCommand) private dbCommand: IDbCommand,
+        @inject(Constants.DI.IQueryHelper) private queryHelper: IQueryHelper
+    ) { }
+
     async validateCustomer(user_name: string, password: string): Promise<any> {
         const rows = await this.dbCommand.execute(
             `SELECT * FROM customer where userName= "${user_name}" AND password = "${password}"`
         );
 
-        const data = queryHelper.emptyOrRows(rows);
+        const data = this.queryHelper.emptyOrRows(rows);
         return { data };
     }
     //async getMultiple(page: number): Promise<any> {

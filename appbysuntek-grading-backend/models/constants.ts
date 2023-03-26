@@ -2,6 +2,11 @@ export const Constants = {
     DI: {
         ICustomerRepository: "ICustomerRepository",
         IDbCommand: "IDbCommand",
-        IConnectionPool: "IPoolConnection"
+        IConnectionPool: "IConnectionPool",
+        IQueryHelper: "IQueryHelper",
+        IEncrypter: "IEncrypter",
+        ICryptoConfig: "ICryptoConfig",
+        IDbConfig: "IDbConfig"
+
     }
 }

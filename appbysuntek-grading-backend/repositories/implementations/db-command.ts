@@ -1,4 +1,3 @@
-import dbConfig from "../db-config"
 import { IDbCommand } from "../i-db-command";
 import { singleton, inject, injectable } from "tsyringe";
 import { Constants } from "../../models/constants";

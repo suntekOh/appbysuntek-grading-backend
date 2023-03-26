@@ -1,17 +1,17 @@
 import * as crypto from 'crypto'
-import cryptoConfig from './crypto-config'
+import { inject, injectable } from 'tsyringe';
+import { Constants } from '../../../models/constants';
+import { ICryptoConfig } from '../i-crypto-config';
+import { IEncrypter } from '../i-encrypter';
 
-interface IEncrypter {
-    encrypt(clearText: string): string;
-    decrypt(encryptedText: string): string;
-}
-
-class Encrypter implements IEncrypter {
-    algorithm: string;
-    key: Buffer;
-    constructor(algorithm: string, encryptionKey: crypto.BinaryLike) {
-        this.algorithm = algorithm;
-        this.key = crypto.scryptSync(encryptionKey, "salt", 32);
+@injectable()
+export class Encrypter implements IEncrypter {
+    private algorithm: string;
+    private key: Buffer;
+    constructor(
+        @inject(Constants.DI.ICryptoConfig) private config: ICryptoConfig) {
+        this.algorithm = config.value.ecnryption_method;
+        this.key = crypto.scryptSync(config.value.secret_key, "salt", 32);
     }
 
     encrypt(clearText: string): string {
@@ -36,7 +36,7 @@ class Encrypter implements IEncrypter {
     }
 }
 
-const { secret_key, ecnryption_method } = cryptoConfig;
+//const { secret_key, ecnryption_method } = cryptoConfig;
 
-const encrypter = new Encrypter(ecnryption_method, secret_key);
-export default encrypter;
+//const encrypter = new Encrypter(ecnryption_method, secret_key);
+//export default encrypter;

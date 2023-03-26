@@ -1,20 +1,21 @@
 import * as mysql from "mysql2/promise";
-import { injectable } from "tsyringe";
-import dbConfig from "../db-config";
+import { inject, injectable } from "tsyringe";
+import { Constants } from "../../models/constants";
+import { IDbConfig } from "../i-db-config";
 import { IDbConnection } from "../i-db-connection";
 
 @injectable()
 export class DbConnection implements IDbConnection {
     pool: mysql.Pool;
-    constructor() {
+    constructor(@inject(Constants.DI.IDbConfig) private dbConfig: IDbConfig) {
         this.pool = mysql.createPool({
-            host: dbConfig.db.host,
-            user: dbConfig.db.user,
-            database: dbConfig.db.database,
-            password: dbConfig.db.password,
-            waitForConnections: true,
-            connectionLimit: 10,
-            queueLimit: 0
+            host: this.dbConfig.value.db.host,
+            user: this.dbConfig.value.db.user,
+            database: this.dbConfig.value.db.database,
+            password: this.dbConfig.value.db.password,
+            waitForConnections: this.dbConfig.value.db.waitForConnections,
+            connectionLimit: this.dbConfig.value.db.connectionLimit,
+            queueLimit: this.dbConfig.value.db.queueLimit
         })
     }
 }

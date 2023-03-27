@@ -10,8 +10,8 @@ export class DbCommand implements IDbCommand {
     constructor(@inject(Constants.DI.IConnectionPool) dbConnection: IDbConnection) {
         this.pool = dbConnection.pool;
     }
-    async execute(sql): Promise<any> {
-        const [results] = await this.pool.execute(sql);
+    async execute(sql, values): Promise<any> {
+        const [results] = await this.pool.execute(sql, values);
         return results;
     }
 }

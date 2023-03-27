@@ -6,48 +6,86 @@ import { ICustomerRepository } from "../i-customer-repository";
 import { IDbCommand } from "../i-db-command";
 import { Constants } from "../../models/constants";
 import { IQueryHelper } from "../i-query-helper";
+import { IEncrypter } from "../../services/crypto/i-encrypter";
+import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedError, UserNameNotFoundError } from "../../models/errors/custom-errors";
+import { ResponseDto } from "../../models/response-dto";
+import { CustomerDto } from "../../models/customer-dto";
 
 @injectable()
 export class CustomerRepository implements ICustomerRepository {
     constructor(
         @inject(Constants.DI.IDbCommand) private dbCommand: IDbCommand,
-        @inject(Constants.DI.IQueryHelper) private queryHelper: IQueryHelper
+        @inject(Constants.DI.IQueryHelper) private queryHelper: IQueryHelper,
+        @inject(Constants.DI.IEncrypter) private encrypter: IEncrypter,
     ) { }
 
-    async validateCustomer(user_name: string, password: string): Promise<any> {
-        const rows = await this.dbCommand.execute(
-            `SELECT * FROM customer where userName= "${user_name}" AND password = "${password}"`
+    async isExistUserName(user_name: string): Promise<boolean> {
+        const customer = await this.dbCommand.execute(
+            'SELECT * FROM `customer` WHERE `userName` = ? limit 0,1',
+            [user_name]
         );
 
-        const data = this.queryHelper.emptyOrRows(rows);
-        return { data };
+        if (customer.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    //async getMultiple(page: number): Promise<any> {
-    //    const offset = queryHelper.getOffset(page, dbConfig.listPerPage);
-    //    const rows = await dbCommand.query(
-    //        `SELECT id, name, released_year, githut_rank, pypl_rank, tiobe_rank
-    //    FROM customer LIMIT ${offset},${dbConfig.listPerPage}`
-    //    );
-    //    const data = queryHelper.emptyOrRows(rows);
-    //    const meta = { page };
 
-    //    return {
-    //        data,
-    //        meta,
-    //    };
-    //}
+    async verifyLogin(user_name: string, password: string): Promise<ResponseDto> {
+        const customer = await this.dbCommand.execute(
+            'SELECT * FROM `customer` WHERE `userName` = ? limit 0,1',
+            [user_name]
+        );
 
-    async create(customer: any): Promise<any> {
-        const result = await this.dbCommand.execute(
-            `INSERT INTO customer(userName, firstName, lastName, email, password) VALUES("${customer.user_name}", "${customer.first_name}", "${customer.last_name}", "${customer.email}", "${customer.password}")`);
+        let response: ResponseDto;
 
-        let message = "Error in creating programming language";
-
-        if (result.affectedRows) {
-            message = "Customer created successfully";
+        if (customer.length === 0) {
+            response = {
+                succeeded: false,
+                error: new UserNameNotFoundError(`${user_name} doesn't exist!`),
+            }
+        } else if (this.encrypter.decrypt(customer[0].password) != password) {
+            response = {
+                succeeded: false,
+                error: new PasswordNotMatchedError(`password doesn't match.`),
+            }
+        } else {
+            response = {
+                succeeded: true
+            }
         }
 
-        return { message };
+        return response;
+    }
+
+    async register(customer: CustomerDto): Promise<ResponseDto> {
+        let response: ResponseDto;
+
+        if (await this.isExistUserName(customer.userName)) {
+            response = {
+                succeeded: false,
+                error: new UserNameAlreadyExistedError(`${customer.userName} already existed`),
+            }
+        } else {
+            const result = await this.dbCommand.execute(
+                'INSERT INTO `customer` (`userName`, `firstName`, `lastName`, `email`, `password`) VALUES(?, ?, ?, ?, ?)',
+                [customer.userName, customer.firstName, customer.lastName, customer.email, this.encrypter.encrypt(customer.password)]
+            );
+
+            if (result.affectedRows > 0) {
+                response = {
+                    succeeded: true,
+                }
+            } else {
+                response = {
+                    succeeded: false,
+                    error: new NoRowAffectedError(`user registration failed`),
+                }
+            }
+        }
+
+        return response;
     }
 
     getMultiple(page: number): Promise<any> {

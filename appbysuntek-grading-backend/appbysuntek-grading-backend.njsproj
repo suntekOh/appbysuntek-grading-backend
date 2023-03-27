@@ -42,6 +42,7 @@
     <Content Include="views\error.pug" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="models\errors\" />
     <Folder Include="repositories\implementations\" />
     <Folder Include="services\crypto\" />
     <Folder Include="models\" />
@@ -57,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="models\constants.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="models\errors\custom-errors.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="models\response-dto.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="repositories\i-db-config.ts">

@@ -6,6 +6,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "guid-typescript": "^1.0.9",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.7.0"

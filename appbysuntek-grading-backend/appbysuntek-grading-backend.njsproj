@@ -43,7 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="models\errors\" />
-    <Folder Include="repositories\implementations\" />
+    <Folder Include="dataAccessLayer\" />
+    <Folder Include="dataAccessLayer\implementations\" />
     <Folder Include="services\crypto\" />
     <Folder Include="models\" />
     <Folder Include="services\" />
@@ -52,7 +53,6 @@
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
-    <Folder Include="repositories\" />
     <Folder Include="services\crypto\implementations\" />
     <Folder Include="views\" />
   </ItemGroup>
@@ -66,25 +66,25 @@
     <TypeScriptCompile Include="models\response-dto.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\i-db-config.ts">
+    <TypeScriptCompile Include="dataAccessLayer\i-db-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\i-db-connection.ts">
+    <TypeScriptCompile Include="dataAccessLayer\i-db-connection.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\i-query-helper.ts">
+    <TypeScriptCompile Include="dataAccessLayer\i-query-helper.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\implementations\db-connection.ts">
+    <TypeScriptCompile Include="dataAccessLayer\implementations\db-connection.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\i-customer-repository.ts">
+    <TypeScriptCompile Include="dataAccessLayer\i-customer-repository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\i-db-command.ts">
+    <TypeScriptCompile Include="dataAccessLayer\i-db-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\implementations\query-helper.ts">
+    <TypeScriptCompile Include="dataAccessLayer\implementations\query-helper.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="routes\crypto-router.ts">
@@ -96,7 +96,7 @@
     <TypeScriptCompile Include="services\crypto\implementations\crypto-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\implementations\db-config.ts">
+    <TypeScriptCompile Include="dataAccessLayer\implementations\db-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="models\customer-dto.ts">
@@ -105,16 +105,19 @@
     <TypeScriptCompile Include="routes\customer-router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\implementations\customer-repository.ts">
+    <TypeScriptCompile Include="dataAccessLayer\implementations\customer-repository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="repositories\implementations\db-command.ts">
+    <TypeScriptCompile Include="dataAccessLayer\implementations\db-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="services\crypto\i-encrypter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="services\crypto\implementations\encrypter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="services\verify-token.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

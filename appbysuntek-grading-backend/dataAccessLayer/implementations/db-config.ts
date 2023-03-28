@@ -2,12 +2,10 @@ import { inject, injectable } from "tsyringe";
 import { Constants } from "../../models/constants";
 import { IEncrypter } from "../../services/crypto/i-encrypter";
 import { IDbConfig } from "../i-db-config";
-import * as dotenv from 'dotenv'
 @injectable()
 export class DbConfig implements IDbConfig {
     public value: any;
     constructor(@inject(Constants.DI.IEncrypter) encrypter: IEncrypter) {
-        dotenv.config();
         this.value = {
             db:
             {

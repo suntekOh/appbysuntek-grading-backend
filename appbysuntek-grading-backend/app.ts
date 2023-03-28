@@ -6,18 +6,21 @@ import indexRouter from './routes/index';
 //import customerRouter from './routes/customerRouter';
 import cryptoRouter from './routes/crypto-router';
 import { container, Lifecycle } from "tsyringe";
-import { CustomerRepository } from './repositories/implementations/customer-repository';
+import { CustomerRepository } from './dataAccessLayer/implementations/customer-repository';
 import { CustomerRouter } from './routes/customer-router';
-import { DbCommand } from "./repositories/implementations/db-command";
+import { DbCommand } from "./dataAccessLayer/implementations/db-command";
 import { Constants } from "./models/constants";
-import { DbConnection } from "./repositories/implementations/db-connection";
-import { QueryHelper } from "./repositories/implementations/query-helper";
+import { DbConnection } from "./dataAccessLayer/implementations/db-connection";
+import { QueryHelper } from "./dataAccessLayer/implementations/query-helper";
 import { Encrypter } from "./services/crypto/implementations/encrypter";
 import { CryptoConfig } from "./services/crypto/implementations/crypto-config";
-import { DbConfig } from "./repositories/implementations/db-config";
+import { DbConfig } from "./dataAccessLayer/implementations/db-config";
+import * as dotenv from 'dotenv'
+import { verifyToken } from "./services/verify-token";
 
 const debug = require('debug')('my express app');
 const app = express();
+dotenv.config();
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
@@ -70,6 +73,7 @@ container.register(
 
 
 container.registerSingleton(CustomerRouter);
+const customerRouter = container.resolve(CustomerRouter);
 
 app.use(express.json());
 app.use(
@@ -77,8 +81,6 @@ app.use(
         extended: true,
     })
 );
-
-const customerRouter = container.resolve(CustomerRouter);
 
 app.use('/', indexRouter);
 app.use("/customers", customerRouter.router);

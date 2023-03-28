@@ -1,7 +1,5 @@
 import { Guid } from "guid-typescript";
 import { inject, injectable } from "tsyringe";
-import { DbCommand } from "./db-command";
-import dbConfig from "../db-config";
 import { ICustomerRepository } from "../i-customer-repository";
 import { IDbCommand } from "../i-db-command";
 import { Constants } from "../../models/constants";

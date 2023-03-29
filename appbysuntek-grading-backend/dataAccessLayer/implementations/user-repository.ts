@@ -1,16 +1,16 @@
 import { Guid } from "guid-typescript";
 import { inject, injectable } from "tsyringe";
-import { ICustomerRepository } from "../i-customer-repository";
+import { IUserRepository } from "../i-user-repository";
 import { IDbCommand } from "../i-db-command";
 import { Constants } from "../../models/constants";
 import { IQueryHelper } from "../i-query-helper";
 import { IEncrypter } from "../../services/crypto/i-encrypter";
 import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedError, UserNameNotFoundError } from "../../models/errors/custom-errors";
 import { ResponseDto } from "../../models/response-dto";
-import { CustomerDto } from "../../models/customer-dto";
+import { UserDto } from "../../models/user-dto";
 
 @injectable()
-export class CustomerRepository implements ICustomerRepository {
+export class UserRepository implements IUserRepository {
     constructor(
         @inject(Constants.DI.IDbCommand) private dbCommand: IDbCommand,
         @inject(Constants.DI.IQueryHelper) private queryHelper: IQueryHelper,
@@ -18,12 +18,12 @@ export class CustomerRepository implements ICustomerRepository {
     ) { }
 
     async isExistUserName(user_name: string): Promise<boolean> {
-        const customer = await this.dbCommand.execute(
+        const user = await this.dbCommand.execute(
             'SELECT * FROM `customer` WHERE `userName` = ? limit 0,1',
             [user_name]
         );
 
-        if (customer.length > 0) {
+        if (user.length > 0) {
             return true;
         } else {
             return false;
@@ -31,19 +31,19 @@ export class CustomerRepository implements ICustomerRepository {
     }
 
     async verifyLogin(user_name: string, password: string): Promise<ResponseDto> {
-        const customer = await this.dbCommand.execute(
+        const user = await this.dbCommand.execute(
             'SELECT * FROM `customer` WHERE `userName` = ? limit 0,1',
             [user_name]
         );
 
         let response: ResponseDto;
 
-        if (customer.length === 0) {
+        if (user.length === 0) {
             response = {
                 succeeded: false,
                 error: new UserNameNotFoundError(`${user_name} doesn't exist!`),
             }
-        } else if (this.encrypter.decrypt(customer[0].password) != password) {
+        } else if (this.encrypter.decrypt(user[0].password) != password) {
             response = {
                 succeeded: false,
                 error: new PasswordNotMatchedError(`password doesn't match.`),
@@ -57,18 +57,18 @@ export class CustomerRepository implements ICustomerRepository {
         return response;
     }
 
-    async register(customer: CustomerDto): Promise<ResponseDto> {
+    async register(user: UserDto): Promise<ResponseDto> {
         let response: ResponseDto;
 
-        if (await this.isExistUserName(customer.userName)) {
+        if (await this.isExistUserName(user.userName)) {
             response = {
                 succeeded: false,
-                error: new UserNameAlreadyExistedError(`${customer.userName} already existed`),
+                error: new UserNameAlreadyExistedError(`${user.userName} already existed`),
             }
         } else {
             const result = await this.dbCommand.execute(
                 'INSERT INTO `customer` (`userName`, `firstName`, `lastName`, `email`, `password`) VALUES(?, ?, ?, ?, ?)',
-                [customer.userName, customer.firstName, customer.lastName, customer.email, this.encrypter.encrypt(customer.password)]
+                [user.userName, user.firstName, user.lastName, user.email, this.encrypter.encrypt(user.password)]
             );
 
             if (result.affectedRows > 0) {

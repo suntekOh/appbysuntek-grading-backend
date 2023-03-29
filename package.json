@@ -3,6 +3,7 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "guid-typescript": "^1.0.9",

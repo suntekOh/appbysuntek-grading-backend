@@ -5,6 +5,9 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>appbysuntek-grading-backend</Name>
     <RootNamespace>appbysuntek-grading-backend</RootNamespace>
+    <LaunchUrl>
+    </LaunchUrl>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -21,7 +24,7 @@
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <NodejsPort>1337</NodejsPort>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,7 +81,7 @@
     <TypeScriptCompile Include="dataAccessLayer\implementations\db-connection.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\i-customer-repository.ts">
+    <TypeScriptCompile Include="dataAccessLayer\i-user-repository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="dataAccessLayer\i-db-command.ts">
@@ -99,13 +102,13 @@
     <TypeScriptCompile Include="dataAccessLayer\implementations\db-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="models\customer-dto.ts">
+    <TypeScriptCompile Include="models\user-dto.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="routes\customer-router.ts">
+    <TypeScriptCompile Include="routes\user-router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\implementations\customer-repository.ts">
+    <TypeScriptCompile Include="dataAccessLayer\implementations\user-repository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="dataAccessLayer\implementations\db-command.ts">

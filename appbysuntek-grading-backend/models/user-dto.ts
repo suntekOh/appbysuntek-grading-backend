@@ -1,6 +1,6 @@
 import { Guid } from "guid-typescript";
 
-export interface CustomerDto {
+export interface UserDto {
     id?: Guid;
     userName: string;
     firstName: string;

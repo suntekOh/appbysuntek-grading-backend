@@ -1,13 +1,10 @@
 import "reflect-metadata";
 import * as express from 'express';
 import { AddressInfo } from "net";
-import * as path from 'path';
 import indexRouter from './routes/index';
-//import customerRouter from './routes/customerRouter';
-import cryptoRouter from './routes/crypto-router';
 import { container, Lifecycle } from "tsyringe";
-import { CustomerRepository } from './dataAccessLayer/implementations/customer-repository';
-import { CustomerRouter } from './routes/customer-router';
+import { UserRepository } from './dataAccessLayer/implementations/user-repository';
+import { UserRouter } from './routes/user-router';
 import { DbCommand } from "./dataAccessLayer/implementations/db-command";
 import { Constants } from "./models/constants";
 import { DbConnection } from "./dataAccessLayer/implementations/db-connection";
@@ -17,6 +14,7 @@ import { CryptoConfig } from "./services/crypto/implementations/crypto-config";
 import { DbConfig } from "./dataAccessLayer/implementations/db-config";
 import * as dotenv from 'dotenv'
 import { verifyToken } from "./services/verify-token";
+import { CryptoRouter } from "./routes/crypto-router";
 
 const debug = require('debug')('my express app');
 const app = express();
@@ -30,8 +28,8 @@ dotenv.config();
 
 
 container.register(
-    Constants.DI.ICustomerRepository,
-    { useClass: CustomerRepository },
+    Constants.DI.IUserRepository,
+    { useClass: UserRepository },
     { lifecycle: Lifecycle.Singleton }
 );
 
@@ -72,8 +70,10 @@ container.register(
 );
 
 
-container.registerSingleton(CustomerRouter);
-const customerRouter = container.resolve(CustomerRouter);
+container.registerSingleton(UserRouter);
+container.registerSingleton(CryptoRouter);
+const userRouter = container.resolve(UserRouter);
+const cryptoRouter = container.resolve(CryptoRouter);
 
 app.use(express.json());
 app.use(
@@ -82,9 +82,10 @@ app.use(
     })
 );
 
-app.use('/', indexRouter);
-app.use("/customers", customerRouter.router);
-app.use("/crypto", cryptoRouter);
+const url_path = process.env.URL_PATH;
+app.use(`/${url_path}/`, indexRouter);
+app.use(`/${url_path}/users`, userRouter.router);
+app.use(`/${url_path}/crypto`, cryptoRouter.router);
 
 // catch 404 and forward to error handler
 //app.use((req, res, next) => {
@@ -126,8 +127,8 @@ app.use((err, req, res, next) => {
     return;
 });
 
-app.set('port', process.env.PORT || 3000);
-
-const server = app.listen(app.get('port'), function () {
+const server = app.listen('1337', function () {
     debug(`Express server listening on port ${(server.address() as AddressInfo).port}`);
 });
+
+

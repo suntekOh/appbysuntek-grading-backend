@@ -3,20 +3,20 @@ import { Router } from 'express';
 import { inject, injectable } from "tsyringe";
 import { Constants } from '../models/constants';
 import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedError, UserNameNotFoundError } from '../models/errors/custom-errors';
-import { ICustomerRepository } from '../dataAccessLayer/i-customer-repository';
+import { IUserRepository } from '../dataAccessLayer/i-user-repository';
 import * as jwt from 'jsonwebtoken'
-import { CustomerDto } from '../models/customer-dto';
+import { UserDto } from '../models/user-dto';
 
 
 @injectable()
-export class CustomerRouter {
+export class UserRouter {
     public router: Router;
-    constructor(@inject(Constants.DI.ICustomerRepository) private customerRepository: ICustomerRepository) {
+    constructor(@inject(Constants.DI.IUserRepository) private userRepository: IUserRepository) {
         this.router = express.Router();
-        /* GET customer */
+        /* GET user */
         this.router.get("/verifyLogin", async function (req, res, next) {
             try {
-                const verifyLoginResponse = await customerRepository.verifyLogin(req.query.user_name as string, req.query.password as string)
+                const verifyLoginResponse = await userRepository.verifyLogin(req.query.user_name as string, req.query.password as string)
                 if (verifyLoginResponse.succeeded) {
                     const jwt_token = jwt.sign(
                         { user_name: req.query.user_name },
@@ -28,7 +28,7 @@ export class CustomerRouter {
                     if (verifyLoginResponse.error instanceof UserNameNotFoundError) {
                         res.status(404).json({ message: verifyLoginResponse.error.message });
                     } else if (verifyLoginResponse.error instanceof PasswordNotMatchedError) {
-                        res.status(400).json({ message: verifyLoginResponse.error.message });
+                        res.status(401).json({ message: verifyLoginResponse.error.message });
                     } else {
                         res.status(500).json({ message: "Error during user verification" });
                     }
@@ -42,7 +42,7 @@ export class CustomerRouter {
         this.router.post("/register", async function (req, res, next) {
             try {
                 console.log(req.body);
-                const dto: CustomerDto = {
+                const dto: UserDto = {
                     userName: req.body.user_name,
                     firstName: req.body.first_name,
                     lastName: req.body.last_name,
@@ -50,12 +50,12 @@ export class CustomerRouter {
                     password: req.body.password
                 }
 
-                const registerResponse = await customerRepository.register(dto);
+                const registerResponse = await userRepository.register(dto);
                 if (registerResponse.succeeded) {
                     res.json({ message: "user registered successfully" });
                 } else {
                     if (registerResponse.error instanceof UserNameAlreadyExistedError) {
-                        res.status(400).json({ message: registerResponse.error.message });
+                        res.status(403).json({ message: registerResponse.error.message });
                     }
                     else if (registerResponse.error instanceof NoRowAffectedError) {
                         res.status(500).json({ message: registerResponse.error.message });

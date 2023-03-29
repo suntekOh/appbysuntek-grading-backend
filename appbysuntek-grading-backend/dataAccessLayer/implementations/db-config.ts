@@ -9,10 +9,10 @@ export class DbConfig implements IDbConfig {
         this.value = {
             db:
             {
-                host: encrypter.decrypt(process.env.HOST),
-                user: encrypter.decrypt(process.env.USER),
-                password: encrypter.decrypt(process.env.PASSWORD),
-                database: encrypter.decrypt(process.env.DATABASE),
+                host: encrypter.decrypt(process.env.DB_HOST),
+                user: encrypter.decrypt(process.env.DB_USER),
+                password: encrypter.decrypt(process.env.DB_PASSWORD),
+                database: encrypter.decrypt(process.env.DB_SCHEMA),
                 waitForConnections: true,
                 connectionLimit: 10,
                 queueLimit: 0

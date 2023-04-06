@@ -57,6 +57,7 @@
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
     <Folder Include="services\crypto\implementations\" />
+    <Folder Include="services\jwt-token-cookie-service\" />
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +119,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="services\crypto\implementations\encrypter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="services\jwt-token-cookie-service\auth-token-cookie-service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="services\jwt-token-cookie-service\i-auth-token-cookie-service.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="services\verify-token.ts">

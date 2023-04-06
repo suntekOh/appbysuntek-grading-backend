@@ -6,24 +6,25 @@ import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedErro
 import { IUserRepository } from '../dataAccessLayer/i-user-repository';
 import * as jwt from 'jsonwebtoken'
 import { UserDto } from '../models/user-dto';
+import { IAuthTokenCookieService } from '../services/jwt-token-cookie-service/i-auth-token-cookie-service';
 
 
 @injectable()
 export class UserRouter {
     public router: Router;
-    constructor(@inject(Constants.DI.IUserRepository) private userRepository: IUserRepository) {
+    constructor(
+        @inject(Constants.DI.IUserRepository) private userRepository: IUserRepository,
+        @inject(Constants.DI.IAuthTokenCookieService) private authTokenCookieService: IAuthTokenCookieService
+    ) {
         this.router = express.Router();
         /* GET user */
         this.router.get("/verifyLogin", async function (req, res, next) {
             try {
                 const verifyLoginResponse = await userRepository.verifyLogin(req.query.user_name as string, req.query.password as string)
                 if (verifyLoginResponse.succeeded) {
-                    const jwt_token = jwt.sign(
-                        { user_name: req.query.user_name },
-                        process.env.JWT_TOKEN_SECRET,
-                        { expiresIn: '1h' }
-                    );
-                    res.header("auth-token", jwt_token).json({ message: "verified user" });
+                    authTokenCookieService.setAuthToken(res, req.query.user_name as string);
+                    res.json({ message: "verified user" });
+
                 } else {
                     if (verifyLoginResponse.error instanceof UserNameNotFoundError) {
                         res.status(404).json({ message: verifyLoginResponse.error.message });

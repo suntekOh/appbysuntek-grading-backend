@@ -15,9 +15,32 @@ import { DbConfig } from "./dataAccessLayer/implementations/db-config";
 import * as dotenv from 'dotenv'
 import { verifyToken } from "./services/verify-token";
 import { CryptoRouter } from "./routes/crypto-router";
+import * as cors from 'cors'
+import { AuthTokenCookieService } from "./services/jwt-token-cookie-service/auth-token-cookie-service";
 
-const debug = require('debug')('my express app');
 const app = express();
+// Set CORS options 
+const cors = require(`cors`)
+
+const whitelist = [
+    'http://localhost:3000', // not https
+]
+
+const corsOptions = {
+    credentials: true,
+    origin: (origin, callback) => {
+        // `!origin` allows server-to-server requests (ie, localhost requests)
+        if (!origin || whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error("Not allowed by CORS: " + origin))
+        }
+    },
+    optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions))
+
 dotenv.config();
 
 // view engine setup
@@ -66,6 +89,12 @@ container.register(
 container.register(
     Constants.DI.IDbConfig,
     { useClass: DbConfig },
+    { lifecycle: Lifecycle.Singleton }
+);
+
+container.register(
+    Constants.DI.IAuthTokenCookieService,
+    { useClass: AuthTokenCookieService },
     { lifecycle: Lifecycle.Singleton }
 );
 
@@ -128,7 +157,7 @@ app.use((err, req, res, next) => {
 });
 
 const server = app.listen('1337', function () {
-    debug(`Express server listening on port ${(server.address() as AddressInfo).port}`);
+    console.log(`Express server listening on port ${(server.address() as AddressInfo).port}`);
 });
 
 

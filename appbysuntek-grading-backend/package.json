@@ -23,7 +23,8 @@
     "mysql2": "^2.3.3",
     "pug": "^2.0.0-rc.3",
     "reflect-metadata": "^0.1.13",
-    "tsyringe": "^4.7.0"
+    "tsyringe": "^4.7.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/debug": "0.0.30",

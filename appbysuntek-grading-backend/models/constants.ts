@@ -7,7 +7,8 @@ export const Constants = {
         IEncrypter: "IEncrypter",
         ICryptoConfig: "ICryptoConfig",
         IDbConfig: "IDbConfig",
-        IAuthTokenCookieService: "IAuthTokenCookieService"
+        IAuthTokenCookieService: "IAuthTokenCookieService",
+        ILogger: "ILogger"
 
     }
 }

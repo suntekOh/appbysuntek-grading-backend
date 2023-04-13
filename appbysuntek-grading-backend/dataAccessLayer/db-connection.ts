@@ -1,8 +1,11 @@
 import * as mysql from "mysql2/promise";
 import { inject, injectable } from "tsyringe";
-import { Constants } from "../../models/constants";
-import { IDbConfig } from "../i-db-config";
-import { IDbConnection } from "../i-db-connection";
+import { Constants } from "../models/constants";
+import { IDbConfig } from "./db-config";
+
+export interface IDbConnection {
+    pool: mysql.Pool;
+}
 
 @injectable()
 export class DbConnection implements IDbConnection {

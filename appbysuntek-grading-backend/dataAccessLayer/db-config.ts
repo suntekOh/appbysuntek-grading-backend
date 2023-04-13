@@ -1,7 +1,11 @@
 import { inject, injectable } from "tsyringe";
-import { Constants } from "../../models/constants";
-import { IEncrypter } from "../../services/crypto/i-encrypter";
-import { IDbConfig } from "../i-db-config";
+import { Constants } from "../models/constants";
+import { IEncrypter } from "../services/crypto/encrypter";
+
+export interface IDbConfig {
+    value: any;
+}
+
 @injectable()
 export class DbConfig implements IDbConfig {
     public value: any;

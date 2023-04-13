@@ -3,10 +3,11 @@ import { Router } from 'express';
 import { inject, injectable } from "tsyringe";
 import { Constants } from '../models/constants';
 import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedError, UserNameNotFoundError } from '../models/errors/custom-errors';
-import { IUserRepository } from '../dataAccessLayer/i-user-repository';
+import { IUserRepository } from '../dataAccessLayer/user-repository';
 import * as jwt from 'jsonwebtoken'
 import { UserDto } from '../models/user-dto';
-import { IAuthTokenCookieService } from '../services/jwt-token-cookie-service/i-auth-token-cookie-service';
+import { IAuthTokenCookieService } from '../services/jwt-token-cookie-service/auth-token-cookie-service';
+import { ILogger } from '../services/logger/logger';
 
 
 @injectable()
@@ -14,7 +15,8 @@ export class UserRouter {
     public router: Router;
     constructor(
         @inject(Constants.DI.IUserRepository) private userRepository: IUserRepository,
-        @inject(Constants.DI.IAuthTokenCookieService) private authTokenCookieService: IAuthTokenCookieService
+        @inject(Constants.DI.IAuthTokenCookieService) private authTokenCookieService: IAuthTokenCookieService,
+        @inject(Constants.DI.ILogger) private logger: ILogger,
     ) {
         this.router = express.Router();
         /* GET user */
@@ -35,8 +37,10 @@ export class UserRouter {
                     }
                 }
             } catch (err) {
-                console.error(`Error during user verification`, err.message);
-                next(err);
+                console.error(err.message, err.stack);
+                logger.value.error(err.message, err.stack)
+                const statusCode = err.statusCode || 500;
+                res.status(statusCode).json({ message: err.message });
             }
         });
 
@@ -44,9 +48,9 @@ export class UserRouter {
             try {
                 console.log(req.body);
                 const dto: UserDto = {
-                    userName: req.body.user_name,
-                    firstName: req.body.first_name,
-                    lastName: req.body.last_name,
+                    userName: req.body.userName,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
                     email: req.body.email,
                     password: req.body.password
                 }
@@ -65,8 +69,10 @@ export class UserRouter {
                     }
                 }
             } catch (err) {
-                console.error(`Error during user registration`, err.message);
-                next(err);
+                console.error(err.message, err.stack);
+                logger.value.error(err.message, err.stack)
+                const statusCode = err.statusCode || 500;
+                res.status(statusCode).json({ message: err.message });
             }
         });
     }

@@ -1,9 +1,11 @@
-import { IAuthTokenCookieService } from "./i-auth-token-cookie-service";
 import * as jwt from 'jsonwebtoken'
 import * as cookie from 'cookie'
 import * as express from "express";
 import { injectable } from "tsyringe";
 
+export interface IAuthTokenCookieService {
+    setAuthToken(res: Express.Response, userName: string): void;
+}
 
 @injectable()
 export class AuthTokenCookieService implements IAuthTokenCookieService {

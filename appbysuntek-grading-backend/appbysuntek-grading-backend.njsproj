@@ -47,7 +47,6 @@
   <ItemGroup>
     <Folder Include="models\errors\" />
     <Folder Include="dataAccessLayer\" />
-    <Folder Include="dataAccessLayer\implementations\" />
     <Folder Include="services\crypto\" />
     <Folder Include="models\" />
     <Folder Include="services\" />
@@ -56,8 +55,8 @@
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
-    <Folder Include="services\crypto\implementations\" />
     <Folder Include="services\jwt-token-cookie-service\" />
+    <Folder Include="services\logger\" />
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
@@ -70,37 +69,19 @@
     <TypeScriptCompile Include="models\response-dto.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\i-db-config.ts">
+    <TypeScriptCompile Include="dataAccessLayer\db-connection.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\i-db-connection.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\i-query-helper.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\implementations\db-connection.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\i-user-repository.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\i-db-command.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\implementations\query-helper.ts">
+    <TypeScriptCompile Include="dataAccessLayer\query-helper.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="routes\crypto-router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\i-crypto-config.ts">
+    <TypeScriptCompile Include="services\crypto\crypto-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\implementations\crypto-config.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\implementations\db-config.ts">
+    <TypeScriptCompile Include="dataAccessLayer\db-config.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="models\user-dto.ts">
@@ -109,22 +90,19 @@
     <TypeScriptCompile Include="routes\user-router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\implementations\user-repository.ts">
+    <TypeScriptCompile Include="dataAccessLayer\user-repository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="dataAccessLayer\implementations\db-command.ts">
+    <TypeScriptCompile Include="dataAccessLayer\db-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\i-encrypter.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="services\crypto\implementations\encrypter.ts">
+    <TypeScriptCompile Include="services\crypto\encrypter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="services\jwt-token-cookie-service\auth-token-cookie-service.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="services\jwt-token-cookie-service\i-auth-token-cookie-service.ts">
+    <TypeScriptCompile Include="services\logger\logger.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="services\verify-token.ts">

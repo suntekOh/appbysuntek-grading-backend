@@ -1,5 +1,9 @@
 import { injectable } from "tsyringe";
-import { IQueryHelper } from "../i-query-helper";
+
+export interface IQueryHelper {
+    getOffset(currentPage: number, listPerPage: number): number;
+    emptyOrRows<T>(rows: Array<T>): [] | Array<T>
+}
 
 @injectable()
 export class QueryHelper implements IQueryHelper {

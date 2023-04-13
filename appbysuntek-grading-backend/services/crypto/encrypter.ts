@@ -1,8 +1,12 @@
 import * as crypto from 'crypto'
 import { inject, injectable } from 'tsyringe';
-import { Constants } from '../../../models/constants';
-import { ICryptoConfig } from '../i-crypto-config';
-import { IEncrypter } from '../i-encrypter';
+import { Constants } from '../../models/constants';
+import { ICryptoConfig } from './crypto-config';
+
+export interface IEncrypter {
+    encrypt(clearText: string): string;
+    decrypt(encryptedText: string): string;
+}
 
 @injectable()
 export class Encrypter implements IEncrypter {

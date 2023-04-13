@@ -1,6 +1,8 @@
 import { injectable } from 'tsyringe';
-import { ICryptoConfig } from '../i-crypto-config';
 
+export interface ICryptoConfig {
+    value: any;
+}
 
 @injectable()
 export class CryptoConfig implements ICryptoConfig {

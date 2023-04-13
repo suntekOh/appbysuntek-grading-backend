@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Router } from 'express';
 import { inject, injectable } from "tsyringe";
 import { Constants } from '../models/constants';
-import { IEncrypter } from '../services/crypto/i-encrypter';
+import { IEncrypter } from '../services/crypto/encrypter';
 
 
 @injectable()

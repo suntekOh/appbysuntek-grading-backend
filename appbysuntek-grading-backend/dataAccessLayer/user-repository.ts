@@ -1,13 +1,22 @@
 import { Guid } from "guid-typescript";
 import { inject, injectable } from "tsyringe";
-import { IUserRepository } from "../i-user-repository";
-import { IDbCommand } from "../i-db-command";
-import { Constants } from "../../models/constants";
-import { IQueryHelper } from "../i-query-helper";
-import { IEncrypter } from "../../services/crypto/i-encrypter";
-import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedError, UserNameNotFoundError } from "../../models/errors/custom-errors";
-import { ResponseDto } from "../../models/response-dto";
-import { UserDto } from "../../models/user-dto";
+import { IDbCommand } from "./db-command";
+import { Constants } from "../models/constants";
+import { IQueryHelper } from "./query-helper";
+import { IEncrypter } from "../services/crypto/encrypter";
+import { NoRowAffectedError, PasswordNotMatchedError, UserNameAlreadyExistedError, UserNameNotFoundError } from "../models/errors/custom-errors";
+import { ResponseDto } from "../models/response-dto";
+import { UserDto } from "../models/user-dto";
+
+export interface IUserRepository {
+    getMultiple(page: number): Promise<any>;
+    verifyLogin(userName: string, password: string): Promise<ResponseDto>;
+    isExistUserName(userName: string): Promise<boolean>;
+    register(user: UserDto): Promise<ResponseDto>;
+    update(id: Guid, user: any): Promise<any>;
+    delete(id: Guid): Promise<any>;
+}
+
 
 @injectable()
 export class UserRepository implements IUserRepository {

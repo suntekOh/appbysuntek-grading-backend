@@ -3,20 +3,22 @@ import * as express from 'express';
 import { AddressInfo } from "net";
 import indexRouter from './routes/index';
 import { container, Lifecycle } from "tsyringe";
-import { UserRepository } from './dataAccessLayer/implementations/user-repository';
+import { UserRepository } from './dataAccessLayer/user-repository';
 import { UserRouter } from './routes/user-router';
-import { DbCommand } from "./dataAccessLayer/implementations/db-command";
+import { DbCommand } from "./dataAccessLayer/db-command";
 import { Constants } from "./models/constants";
-import { DbConnection } from "./dataAccessLayer/implementations/db-connection";
-import { QueryHelper } from "./dataAccessLayer/implementations/query-helper";
-import { Encrypter } from "./services/crypto/implementations/encrypter";
-import { CryptoConfig } from "./services/crypto/implementations/crypto-config";
-import { DbConfig } from "./dataAccessLayer/implementations/db-config";
+import { DbConnection } from "./dataAccessLayer/db-connection";
+import { QueryHelper } from "./dataAccessLayer/query-helper";
+import { Encrypter } from "./services/crypto/encrypter";
+import { CryptoConfig } from "./services/crypto/crypto-config";
+import { DbConfig } from "./dataAccessLayer/db-config";
 import * as dotenv from 'dotenv'
 import { verifyToken } from "./services/verify-token";
 import { CryptoRouter } from "./routes/crypto-router";
 import * as cors from 'cors'
 import { AuthTokenCookieService } from "./services/jwt-token-cookie-service/auth-token-cookie-service";
+import { Logger } from "winston";
+import { CustomLogger } from "./services/logger/logger";
 
 const app = express();
 // Set CORS options 
@@ -98,11 +100,17 @@ container.register(
     { lifecycle: Lifecycle.Singleton }
 );
 
+container.register(
+    Constants.DI.ILogger,
+    { useClass: CustomLogger },
+    { lifecycle: Lifecycle.Transient }
+);
 
 container.registerSingleton(UserRouter);
 container.registerSingleton(CryptoRouter);
 const userRouter = container.resolve(UserRouter);
 const cryptoRouter = container.resolve(CryptoRouter);
+const customLogger = container.resolve(CustomLogger);
 
 app.use(express.json());
 app.use(
@@ -151,6 +159,7 @@ app.use(`/${url_path}/crypto`, cryptoRouter.router);
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     console.error(err.message, err.stack);
+    customLogger.value.error(err.message, err.stack)
     res.status(statusCode).json({ message: err.message });
 
     return;

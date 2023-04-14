@@ -22,7 +22,7 @@ export class UserRouter {
         /* GET user */
         this.router.get("/verifyLogin", async function (req, res, next) {
             try {
-                const verifyLoginResponse = await userRepository.verifyLogin(req.query.user_name as string, req.query.password as string)
+                const verifyLoginResponse = await userRepository.verifyLogin(req.query.userName as string, req.query.password as string)
                 if (verifyLoginResponse.succeeded) {
                     authTokenCookieService.setAuthToken(res, req.query.user_name as string);
                     res.json({ message: "verified user" });
@@ -37,16 +37,12 @@ export class UserRouter {
                     }
                 }
             } catch (err) {
-                console.error(err.message, err.stack);
-                logger.value.error(err.message, err.stack)
-                const statusCode = err.statusCode || 500;
-                res.status(statusCode).json({ message: err.message });
+                next(err);
             }
         });
 
         this.router.post("/register", async function (req, res, next) {
             try {
-                console.log(req.body);
                 const dto: UserDto = {
                     userName: req.body.userName,
                     firstName: req.body.firstName,
@@ -69,11 +65,9 @@ export class UserRouter {
                     }
                 }
             } catch (err) {
-                console.error(err.message, err.stack);
-                logger.value.error(err.message, err.stack)
-                const statusCode = err.statusCode || 500;
-                res.status(statusCode).json({ message: err.message });
+                next(err);
             }
+
         });
     }
 }

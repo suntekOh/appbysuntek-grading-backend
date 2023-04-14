@@ -26,7 +26,9 @@ export class DbCommand implements IDbCommand {
         } catch (err) {
             throw err;
         } finally {
-            conn.release();
+            if (conn) {
+                conn.release();
+            }
         }
     }
 }

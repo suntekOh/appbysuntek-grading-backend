@@ -17,21 +17,18 @@ import { verifyToken } from "./services/verify-token";
 import { CryptoRouter } from "./routes/crypto-router";
 import * as cors from 'cors'
 import { AuthTokenCookieService } from "./services/jwt-token-cookie-service/auth-token-cookie-service";
-import { Logger } from "winston";
 import { CustomLogger } from "./services/logger/logger";
 
 const app = express();
 // Set CORS options 
 const cors = require(`cors`)
+dotenv.config();
 
-const whitelist = [
-    'http://localhost:3000', // not https
-]
+const whitelist = process.env.CORS_WHITELIST.split(',');
 
 const corsOptions = {
     credentials: true,
     origin: (origin, callback) => {
-        // `!origin` allows server-to-server requests (ie, localhost requests)
         if (!origin || whitelist.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
@@ -42,15 +39,6 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
-
-dotenv.config();
-
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'pug');
-
-//app.use(express.static(path.join(__dirname, 'public')));
-
 
 container.register(
     Constants.DI.IUserRepository,
@@ -124,7 +112,7 @@ app.use(`/${url_path}/`, indexRouter);
 app.use(`/${url_path}/users`, userRouter.router);
 app.use(`/${url_path}/crypto`, cryptoRouter.router);
 
-// catch 404 and forward to error handler
+ //catch 404 and forward to error handler
 //app.use((req, res, next) => {
 //    const err = new Error('Not Found');
 //    err[ 'status' ] = 404;
@@ -158,8 +146,7 @@ app.use(`/${url_path}/crypto`, cryptoRouter.router);
 /* Error handler middleware */
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
-    console.error(err.message, err.stack);
-    customLogger.value.error(err.message, err.stack)
+    customLogger.value.error(err.message, err)
     res.status(statusCode).json({ message: err.message });
 
     return;

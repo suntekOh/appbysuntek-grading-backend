@@ -40,9 +40,6 @@
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
-    <Content Include="views\index.pug" />
-    <Content Include="views\layout.pug" />
-    <Content Include="views\error.pug" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="models\errors\" />
@@ -57,7 +54,6 @@
     <Folder Include="routes\" />
     <Folder Include="services\jwt-token-cookie-service\" />
     <Folder Include="services\logger\" />
-    <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="models\constants.ts">

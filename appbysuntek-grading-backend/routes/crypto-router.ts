@@ -17,7 +17,6 @@ export class CryptoRouter {
                 const dencrypted = encrypter.decrypt(encrypted);
                 res.json({ worked: clear_text === dencrypted });
             } catch (err) {
-                console.error(`error during /crypto POST request`, err.message);
                 next(err);
             }
         });

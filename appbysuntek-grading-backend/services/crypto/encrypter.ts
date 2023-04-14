@@ -39,8 +39,3 @@ export class Encrypter implements IEncrypter {
         return decipher.update(encrypted, "hex", "utf8") + decipher.final("utf8");
     }
 }
-
-//const { secret_key, ecnryption_method } = cryptoConfig;
-
-//const encrypter = new Encrypter(ecnryption_method, secret_key);
-//export default encrypter;
